@@ -14,6 +14,12 @@ parser =
     string
 
 
+{-| Parse a lisp string:
+
+    >>> Parser.run string "\"Hello, World!\""
+    (Ok (LispString "Helo, world!"))
+
+-}
 string : Parser LispVal
 string =
     Parser.succeed LispString
