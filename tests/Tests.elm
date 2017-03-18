@@ -9,8 +9,8 @@ import Lisp.Type exposing (LispVal(..))
 all : Test
 all =
     describe "Lisp parser test"
-        [ test "Parser function exists" <|
+        [ test "Able to parse a double-quoted string" <|
             \() ->
-                Lisp.Parser.parse ""
-                    |> Expect.equal (Ok (LispBool True))
+                Lisp.Parser.parse "\"Hello, World!\""
+                    |> Expect.equal (Ok (LispString "Hello, World!"))
         ]
