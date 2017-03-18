@@ -1,0 +1,6 @@
+# Build files + packages.
+node_modules
+elm-stuff
+
+# Generally you probably shouldn't ignore this, but i just don't care.
+yarn.lock
