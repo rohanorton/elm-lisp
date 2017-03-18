@@ -1,7 +1,11 @@
 module Lisp.Parser exposing (parse)
 
 import Parser exposing (Parser, Error, (|.), (|=))
+import Parser.LanguageKit as LK
+import Lisp.Symbols exposing (isLetter, isDigit, isSymbol)
 import Lisp.Type exposing (LispVal(..))
+import Lisp.Utils exposing ((|||), (&&&))
+import Set exposing (Set)
 
 
 parse : String -> Result Error LispVal
@@ -11,7 +15,38 @@ parse string =
 
 parser : Parser LispVal
 parser =
-    string
+    Parser.oneOf
+        [ string
+        , atom
+        ]
+
+
+{-| Parse a lisp atom.
+
+An atom is a letter or symbol, followed by any number of letters, digits, or
+symbols.
+
+    >>> Parser.run string "atom"
+    (Ok (LispAtom "atom"))
+-}
+atom : Parser LispVal
+atom =
+    Parser.succeed LispAtom
+        |= atomString
+        |. Parser.end
+
+
+atomString : Parser String
+atomString =
+    LK.variable
+        (isLetter ||| isSymbol)
+        (isLetter ||| isSymbol ||| isDigit)
+        keywords
+
+
+keywords : Set String
+keywords =
+    Set.fromList []
 
 
 {-| Parse a lisp string:

@@ -13,4 +13,8 @@ all =
             \() ->
                 Lisp.Parser.parse "\"Hello, World!\""
                     |> Expect.equal (Ok (LispString "Hello, World!"))
+        , test "Able to parse atom" <|
+            \() ->
+                Lisp.Parser.parse "atomic123"
+                    |> Expect.equal (Ok (LispAtom "atomic123"))
         ]
