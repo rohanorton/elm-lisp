@@ -17,4 +17,8 @@ all =
             \() ->
                 Lisp.Parser.parse "atomic123"
                     |> Expect.equal (Ok (LispAtom "atomic123"))
+        , test "Able to parse empty list" <|
+            \() ->
+                Lisp.Parser.parse "()"
+                    |> Expect.equal (Ok (LispList []))
         ]

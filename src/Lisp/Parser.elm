@@ -18,7 +18,16 @@ parser =
     Parser.oneOf
         [ string
         , atom
+        , list
         ]
+
+
+list : Parser LispVal
+list =
+    Parser.succeed (LispList [])
+        |. Parser.symbol "("
+        |. Parser.symbol ")"
+        |. Parser.end
 
 
 {-| Parse a lisp atom.
