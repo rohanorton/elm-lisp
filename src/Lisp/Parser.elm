@@ -61,3 +61,4 @@ string =
         |. Parser.symbol "\""
         |= Parser.keep Parser.zeroOrMore (\char -> char /= '"')
         |. Parser.symbol "\""
+        |. Parser.end
