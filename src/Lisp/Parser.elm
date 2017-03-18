@@ -17,6 +17,7 @@ parser : Parser LispVal
 parser =
     Parser.oneOf
         [ string
+        , bool
         , atom
         , list
         ]
@@ -28,6 +29,18 @@ list =
         |. Parser.symbol "("
         |. Parser.symbol ")"
         |. Parser.end
+
+
+bool : Parser LispVal
+bool =
+    Parser.oneOf
+        [ Parser.succeed (LispBool True)
+            |. Parser.keyword "#t"
+            |. Parser.end
+        , Parser.succeed (LispBool False)
+            |. Parser.keyword "#f"
+            |. Parser.end
+        ]
 
 
 {-| Parse a lisp atom.

@@ -21,4 +21,12 @@ all =
             \() ->
                 Lisp.Parser.parse "()"
                     |> Expect.equal (Ok (LispList []))
+        , test "Able to parse bool: true" <|
+            \() ->
+                Lisp.Parser.parse "#t"
+                    |> Expect.equal (Ok (LispBool True))
+        , test "Able to parse bool: false" <|
+            \() ->
+                Lisp.Parser.parse "#f"
+                    |> Expect.equal (Ok (LispBool False))
         ]
