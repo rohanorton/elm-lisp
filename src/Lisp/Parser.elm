@@ -25,8 +25,9 @@ parser =
 
 list : Parser LispVal
 list =
-    Parser.succeed (LispList [])
+    Parser.succeed LispList
         |. Parser.symbol "("
+        |= Parser.repeat Parser.zeroOrMore atom
         |. Parser.symbol ")"
         |. Parser.end
 
@@ -55,7 +56,6 @@ atom : Parser LispVal
 atom =
     Parser.succeed LispAtom
         |= atomString
-        |. Parser.end
 
 
 atomString : Parser String
