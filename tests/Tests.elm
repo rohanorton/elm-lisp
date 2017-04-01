@@ -29,6 +29,14 @@ all =
             \() ->
                 Lisp.Parser.parse "(one two three)"
                     |> Expect.equal (Ok (LispList [ LispAtom "one", LispAtom "two", LispAtom "three" ]))
+        , test "Able to parse list with different types inside" <|
+            \() ->
+                Lisp.Parser.parse "(one \"two\" #f)"
+                    |> Expect.equal (Ok (LispList [ LispAtom "one", LispString "two", LispBool False ]))
+        , test "Able to parse list with nested lists" <|
+            \() ->
+                Lisp.Parser.parse "(one ((\"two\") (three)))"
+                    |> Expect.equal (Ok (LispList [ LispAtom "one", LispList [ LispList [ LispString "two" ], LispList [ LispAtom "three" ] ] ]))
         , test "Able to parse bool: true" <|
             \() ->
                 Lisp.Parser.parse "#t"
