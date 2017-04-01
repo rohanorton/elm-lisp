@@ -29,7 +29,6 @@ list =
         |. Parser.symbol "("
         |= Parser.repeat Parser.zeroOrMore atom
         |. Parser.symbol ")"
-        |. Parser.end
 
 
 bool : Parser LispVal
@@ -37,10 +36,8 @@ bool =
     Parser.oneOf
         [ Parser.succeed (LispBool True)
             |. Parser.keyword "#t"
-            |. Parser.end
         , Parser.succeed (LispBool False)
             |. Parser.keyword "#f"
-            |. Parser.end
         ]
 
 
@@ -83,4 +80,3 @@ string =
         |. Parser.symbol "\""
         |= Parser.keep Parser.zeroOrMore (\char -> char /= '"')
         |. Parser.symbol "\""
-        |. Parser.end
