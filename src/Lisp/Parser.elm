@@ -17,12 +17,15 @@ parser : Parser LispVal
 parser =
     Parser.succeed identity
         |. whitespace
-        |= Parser.oneOf
-            [ string
-            , bool
-            , atom
-            , list
-            ]
+        |= Parser.lazy
+            (\() ->
+                Parser.oneOf
+                    [ string
+                    , bool
+                    , atom
+                    , list
+                    ]
+            )
         |. whitespace
 
 
@@ -30,7 +33,9 @@ list : Parser LispVal
 list =
     Parser.succeed LispList
         |. Parser.symbol "("
-        |= Parser.repeat Parser.zeroOrMore atom
+        |. whitespace
+        |= Parser.repeat Parser.zeroOrMore (Parser.lazy (\() -> parser))
+        |. whitespace
         |. Parser.symbol ")"
 
 

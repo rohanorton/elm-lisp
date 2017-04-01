@@ -25,6 +25,10 @@ all =
             \() ->
                 Lisp.Parser.parse "(one)"
                     |> Expect.equal (Ok (LispList [ LispAtom "one" ]))
+        , test "Able to parse list with multiple atoms inside" <|
+            \() ->
+                Lisp.Parser.parse "(one two three)"
+                    |> Expect.equal (Ok (LispList [ LispAtom "one", LispAtom "two", LispAtom "three" ]))
         , test "Able to parse bool: true" <|
             \() ->
                 Lisp.Parser.parse "#t"
