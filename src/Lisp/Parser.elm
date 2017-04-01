@@ -1,7 +1,7 @@
 module Lisp.Parser exposing (parse)
 
 import Parser exposing (Parser, Error, (|.), (|=))
-import Parser.LanguageKit as LK
+import Parser.LanguageKit as LK exposing (LineComment(..), MultiComment(NestableComment))
 import Lisp.Symbols exposing (isLetter, isDigit, isSymbol)
 import Lisp.Type exposing (LispVal(..))
 import Lisp.Utils exposing ((|||), (&&&))
@@ -15,12 +15,15 @@ parse string =
 
 parser : Parser LispVal
 parser =
-    Parser.oneOf
-        [ string
-        , bool
-        , atom
-        , list
-        ]
+    Parser.succeed identity
+        |. whitespace
+        |= Parser.oneOf
+            [ string
+            , bool
+            , atom
+            , list
+            ]
+        |. whitespace
 
 
 list : Parser LispVal
@@ -80,3 +83,16 @@ string =
         |. Parser.symbol "\""
         |= Parser.keep Parser.zeroOrMore (\char -> char /= '"')
         |. Parser.symbol "\""
+
+
+
+-- IGNORED
+
+
+whitespace : Parser ()
+whitespace =
+    LK.whitespace
+        { allowTabs = False
+        , lineComment = LineComment ";"
+        , multiComment = NestableComment "#|" "|#"
+        }

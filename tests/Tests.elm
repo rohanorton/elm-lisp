@@ -33,4 +33,18 @@ all =
             \() ->
                 Lisp.Parser.parse "#f"
                     |> Expect.equal (Ok (LispBool False))
+        , test "Ignores whitespace" <|
+            \() ->
+                Lisp.Parser.parse """
+
+                ; This is a singleline commment.
+
+                "Hello, World!"
+
+                #| I
+                   am a multiline
+                   block comment |#
+
+                """
+                    |> Expect.equal (Ok (LispString "Hello, World!"))
         ]
