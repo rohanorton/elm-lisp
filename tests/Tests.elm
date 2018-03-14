@@ -59,4 +59,12 @@ all =
 
                 """
                     |> Expect.equal (Ok (LispString "Hello, World!"))
+        , test "parse floats" <|
+            \() ->
+                Lisp.Parser.parse "1.23"
+                    |> Expect.equal (Ok (LispNum 1.23))
+        , test "parse ints (as floats)" <|
+            \() ->
+                Lisp.Parser.parse "1"
+                    |> Expect.equal (Ok (LispNum 1.0))
         ]

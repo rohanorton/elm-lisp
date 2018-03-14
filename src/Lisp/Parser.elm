@@ -21,11 +21,29 @@ parser =
             (\() ->
                 Parser.oneOf
                     [ string
+                    , float
+                    , int
                     , bool
                     , atom
                     , list
                     ]
             )
+        |. whitespace
+
+
+int : Parser LispVal
+int =
+    Parser.succeed (LispNum << toFloat)
+        |. whitespace
+        |= Parser.int
+        |. whitespace
+
+
+float : Parser LispVal
+float =
+    Parser.succeed LispNum
+        |. whitespace
+        |= Parser.float
         |. whitespace
 
 
