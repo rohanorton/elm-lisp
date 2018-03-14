@@ -32,6 +32,7 @@ elems =
                     , bool
                     , atom
                     , list
+                    , quotedList
                     ]
             )
         |. whitespace
@@ -61,6 +62,17 @@ float =
 list : Parser LispVal
 list =
     Parser.succeed LispList
+        |. Parser.symbol "("
+        |. whitespace
+        |= Parser.repeat Parser.zeroOrMore (Parser.lazy (\() -> elems))
+        |. whitespace
+        |. Parser.symbol ")"
+
+
+quotedList : Parser LispVal
+quotedList =
+    Parser.succeed LispQuotedList
+        |. Parser.symbol "'"
         |. Parser.symbol "("
         |. whitespace
         |= Parser.repeat Parser.zeroOrMore (Parser.lazy (\() -> elems))

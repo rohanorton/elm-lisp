@@ -80,4 +80,8 @@ all =
                             , context = []
                             }
                         )
+        , test "Parse quoted list" <|
+            \() ->
+                Lisp.Parser.parse "'(1 2 3 4)"
+                    |> Expect.equal (Ok (LispQuotedList ([ LispNum 1.0, LispNum 2.0, LispNum 3.0, LispNum 4.0 ])))
         ]
