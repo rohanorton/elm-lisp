@@ -16,19 +16,30 @@ parse string =
 parser : Parser LispVal
 parser =
     Parser.succeed identity
+        |= elems
+        |. Parser.end
+
+
+elems : Parser LispVal
+elems =
+    Parser.succeed identity
         |. whitespace
         |= Parser.lazy
             (\() ->
                 Parser.oneOf
                     [ string
-                    , float
-                    , int
+                    , num
                     , bool
                     , atom
                     , list
                     ]
             )
         |. whitespace
+
+
+num : Parser LispVal
+num =
+    Parser.oneOf [ float, int ]
 
 
 int : Parser LispVal
@@ -52,7 +63,7 @@ list =
     Parser.succeed LispList
         |. Parser.symbol "("
         |. whitespace
-        |= Parser.repeat Parser.zeroOrMore (Parser.lazy (\() -> parser))
+        |= Parser.repeat Parser.zeroOrMore (Parser.lazy (\() -> elems))
         |. whitespace
         |. Parser.symbol ")"
 

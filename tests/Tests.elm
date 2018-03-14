@@ -2,6 +2,7 @@ module Tests exposing (..)
 
 import Test exposing (..)
 import Expect
+import Parser
 import Lisp.Parser
 import Lisp.Type exposing (LispVal(..))
 
@@ -67,4 +68,16 @@ all =
             \() ->
                 Lisp.Parser.parse "1"
                     |> Expect.equal (Ok (LispNum 1.0))
+        , test "Parser expects end of input after parsing a single element" <|
+            \() ->
+                Lisp.Parser.parse "+ 1 2)"
+                    |> Expect.equal
+                        (Err
+                            { row = 1
+                            , col = 3
+                            , source = "+ 1 2)"
+                            , problem = Parser.ExpectingEnd
+                            , context = []
+                            }
+                        )
         ]
